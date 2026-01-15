@@ -23,6 +23,7 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
                 id={category.id}
                 src={`/alpaca/${category.id}/${defaultOption.filename}`}
                 alt={category.label}
+                style={{ zIndex: category.zIndex }}
               />
             ) : null;
           })
