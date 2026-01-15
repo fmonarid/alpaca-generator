@@ -1,16 +1,48 @@
 ---
-
+import { ALPACA_CATEGORIES } from '../data/options.js';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <main>
+      <h1>Alpaca Generator</h1>
+      <div class="alpacaImgContainer">
+        <img id="background" src="/alpaca/backgrounds/darkblue50.png" />
+        <img id="ears" src="/alpaca/ears/default.png" />
+        <img id="hair" src="/alpaca/hair/default.png" />
+        <img id="neck" src="/alpaca/neck/default.png" />
+        <img id="eyes" src="/alpaca/eyes/default.png" />
+        <img id="nose" src="/alpaca/nose.png" />
+        <img id="mouth" src="/alpaca/mouth/default.png" />
+        <img id="leg" src="/alpaca/leg/default.png" />
+        <img id="accessories" src="/alpaca/accessories/headphone.png" />
+      </div>
+      <div class="alpacaOptions"></div>
+    </main>
+  </body>
 </html>
+
+<style>
+  .alpacaImgContainer {
+    position: relative;
+    width: 500px;
+    height: 500px;
+  }
+  .alpacaImgContainer img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .alpacaImgContainer #accessories {
+    display: none;
+  }
+</style>
