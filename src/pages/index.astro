@@ -14,7 +14,20 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
     <main>
       <h1>Alpaca Generator</h1>
       <div class="alpacaImgContainer">
-        <img id="background" src="/alpaca/backgrounds/darkblue50.png" />
+        {
+          ALPACA_CATEGORIES.map((category) => {
+            const defaultOption = category.options[0];
+            // SÓ desenha a tag <img> se houver um nome de arquivo existente
+            return defaultOption.filename ? (
+              <img
+                id={category.id}
+                src={`/alpaca/${category.id}/${defaultOption.filename}`}
+                alt={category.label}
+              />
+            ) : null;
+          })
+        }
+        <!-- <img id="background" src="/alpaca/backgrounds/darkblue50.png" />
         <img id="ears" src="/alpaca/ears/default.png" />
         <img id="hair" src="/alpaca/hair/default.png" />
         <img id="neck" src="/alpaca/neck/default.png" />
@@ -22,7 +35,7 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
         <img id="nose" src="/alpaca/nose.png" />
         <img id="mouth" src="/alpaca/mouth/default.png" />
         <img id="leg" src="/alpaca/leg/default.png" />
-        <img id="accessories" src="/alpaca/accessories/headphone.png" />
+        <img id="accessories" src="/alpaca/accessories/headphone.png" /> -->
       </div>
       <div class="alpacaOptions"></div>
     </main>
