@@ -17,46 +17,156 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
         {
           ALPACA_CATEGORIES.map((category) => {
             const defaultOption = category.options[0];
-            // SÓ desenha a tag <img> se houver um nome de arquivo existente
-            return defaultOption.filename ? (
+            return (
               <img
-                id={category.id}
-                src={`/alpaca/${category.id}/${defaultOption.filename}`}
+                id={`layer-${category.id}`}
+                src={
+                  defaultOption.filename
+                    ? `/alpaca/${category.id}/${defaultOption.filename}`
+                    : ''
+                }
                 alt={category.label}
-                style={{ zIndex: category.zIndex }}
+                style={{
+                  zIndex: category.zIndex,
+                  display: defaultOption.filename ? 'block' : 'none',
+                }}
               />
-            ) : null;
+            );
           })
         }
-        <!-- <img id="background" src="/alpaca/backgrounds/darkblue50.png" />
-        <img id="ears" src="/alpaca/ears/default.png" />
-        <img id="hair" src="/alpaca/hair/default.png" />
-        <img id="neck" src="/alpaca/neck/default.png" />
-        <img id="eyes" src="/alpaca/eyes/default.png" />
-        <img id="nose" src="/alpaca/nose.png" />
-        <img id="mouth" src="/alpaca/mouth/default.png" />
-        <img id="leg" src="/alpaca/leg/default.png" />
-        <img id="accessories" src="/alpaca/accessories/headphone.png" /> -->
       </div>
-      <div class="alpacaOptions"></div>
+      <div class="alpacaOptions">
+        <div class="alpacaOptions-categories">
+          <h2>Categories</h2>
+          {
+            ALPACA_CATEGORIES.filter(
+              (category) => category.options.length > 1,
+            ).map((category) => (
+              <button id={`cat-${category.id}`}>{category.label}</button>
+            ))
+          }
+        </div>
+        <div class="alpacaOptions-styles">
+          <h2>Style</h2>
+          <div id="styles-container"></div>
+        </div>
+      </div>
     </main>
-  </body>
-</html>
 
-<style>
-  .alpacaImgContainer {
-    position: relative;
-    width: 500px;
-    height: 500px;
-  }
-  .alpacaImgContainer img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .alpacaImgContainer #accessories {
-    display: none;
-  }
-</style>
+    <style>
+      .alpacaImgContainer {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        background-color: #f4f4f4;
+      }
+      .alpacaImgContainer img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </body>
+  <script>
+    import { ALPACA_CATEGORIES as data } from '../data/options.js';
+
+    /**
+     * GLOBAL STATE (State Management)
+     * Object that stores which option is selected for each category.
+     * Ex: { hair: 'short', eyes: 'panda' }
+     */
+    const state = {};
+    data.forEach((category) => {
+      // We initialize each category with the first option (default) from our data.
+      state[category.id] = category.options[0].id;
+    });
+
+    /**
+     * FUNCTION: updateAlpaca
+     * Synchronizes the 'state' object with the <img> tags of each layer.
+     * Iterates through all images and updates their 'src' according to the user's choice.
+     */
+    function updateAlpaca() {
+      for (const categoryId in state) {
+        const optionId = state[categoryId];
+        // 'layer-' avoids ID conflict between the image and the category button.
+        const imgElement = document.getElementById(`layer-${categoryId}`);
+
+        if (imgElement) {
+          const categoryData = data.find((c) => c.id === categoryId);
+          const optionData = categoryData.options.find(
+            (o) => o.id === optionId,
+          );
+
+          if (optionData.filename) {
+            // If we have a valid image (e.g., backgrounds, hair, etc)
+            imgElement.setAttribute(
+              'src',
+              `/alpaca/${categoryId}/${optionData.filename}`,
+            );
+            imgElement.style.display = 'block';
+          } else {
+            // If 'None' (e.g., accessories): we hide the <img> layer.
+            imgElement.style.display = 'none';
+          }
+        }
+      }
+    }
+
+    /**
+     * FUNCTION: renderStyledButtons
+     * Dynamically draws the style buttons (sub-options) within the "Style" section.
+     * @param {string} categoryId - The ID of the selected category (e.g., 'hair').
+     */
+    function renderStyledButtons(categoryId) {
+      const container = document.getElementById('styles-container');
+      const category = data.find((cat) => cat.id === categoryId);
+
+      // Clearing the container is essential to avoid "stacking" buttons from previous categories.
+      container.innerHTML = '';
+
+      category.options.forEach((option) => {
+        const btn = document.createElement('button');
+        btn.innerText = option.label;
+
+        /**
+         * VISUAL STATE LOGIC:
+         * Indicates which option is currently selected.
+         * (The user will complete the full CSS styling later).
+         */
+        if (state[categoryId] === option.id) {
+          btn.style.fontWeight = 'bold';
+        }
+
+        btn.onclick = () => {
+          // Updates the data -> Changes the image on screen -> Redraws the buttons.
+          state[categoryId] = option.id;
+          updateAlpaca();
+          renderStyledButtons(categoryId);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    /**
+     * CLICK CONFIGURATION: Main Categories
+     */
+    const categoryButtons = document.querySelectorAll(
+      '.alpacaOptions-categories button',
+    );
+    categoryButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // We remove the 'cat-' prefix from the button ID to get the real category ID.
+        const categoryId = button.id.replace('cat-', '');
+        renderStyledButtons(categoryId);
+      });
+    });
+
+    // --- INITIALIZATION ---
+    // We do the first drawing of the images and open the first "drawer" (Background).
+    updateAlpaca();
+    renderStyledButtons(data[0].id);
+  </script>
+</html>

@@ -1,3 +1,12 @@
+/**
+ * ALPACA DATA STRUCTURE
+ *
+ * This file defines all customization categories and their respective options.
+ * - id: Unique identifier used for image folders and layer IDs.
+ * - label: Friendly name displayed on buttons.
+ * - zIndex: Defines the stacking order (Higher layers stay in front).
+ * - options: List of available PNG files in the corresponding folder.
+ */
 export const ALPACA_CATEGORIES = [
   {
     id: 'backgrounds',
