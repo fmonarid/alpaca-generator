@@ -45,6 +45,10 @@ import '@fontsource/bungee-shade';
             <Icon name="lucide:shuffle" />
             <span>Random</span>
           </button>
+          <button id="resetImg">
+            <Icon name="lucide:rotate-ccw" />
+            <span>Reset</span>
+          </button>
           <button id="downloadImg">
             <Icon name="lucide:download" />
             <span>Download</span>
@@ -109,7 +113,7 @@ import '@fontsource/bungee-shade';
       }
 
       main {
-        padding: 1rem;
+        padding: 4rem;
         display: grid;
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -147,24 +151,34 @@ import '@fontsource/bungee-shade';
         height: 100%;
       }
       .alpacaImgContainer-actions {
+        width: 100%;
         display: flex;
+        flex-direction: column;
+        align-items: center;
         gap: 1rem;
       }
       .alpacaImgContainer-actions button {
+        width: 100%;
+        max-width: 24rem;
+        min-height: 3rem;
         background-color: #fff;
         border: 2px solid #062a62;
         border-radius: 0.4rem;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 0.8rem;
         font-weight: bold;
         box-shadow: -9px 9px 0px #062a62;
         transition: all 0.1s ease;
       }
       .alpacaImgContainer-actions button:hover {
-        transform: translate(-3px, 3px);
-        box-shadow: -3px 3px 0px #1056c7;
-        color: #1056c7;
+        background-color: #1056c7;
+        color: #fff;
+      }
+      .alpacaImgContainer-actions button:active {
+        transform: translate(-9px, 9px);
+        box-shadow: 0px 0px 0px #1056c7;
       }
 
       .alpacaOptions {
@@ -172,16 +186,29 @@ import '@fontsource/bungee-shade';
         flex-direction: column;
         gap: 2rem;
       }
+      .alpacaOptions > * {
+        text-align: center;
+      }
 
       /* Desktop Layout */
       @media (min-width: 1024px) {
         main {
           grid-template-columns: auto 1fr;
-          padding: 6rem;
+        }
+        main h1 {
+          margin-bottom: 2rem;
         }
 
-        .alpacaImgContainer {
-          min-width: 24rem;
+        .alpacaImgContainer-layers {
+          min-width: 32rem;
+          min-width: none;
+        }
+        .alpacaImgContainer-actions {
+          flex-direction: row;
+        }
+
+        .alpacaOptions > * {
+          text-align: left;
         }
       }
     </style>
@@ -309,6 +336,19 @@ import '@fontsource/bungee-shade';
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
+
+    function resetAlpaca() {
+      data.forEach((category) => {
+        // always reset to first option (0 index)
+        state[category.id] = category.options[0].id;
+      });
+
+      updateAlpaca(); // Desenha a Alpaca original
+      renderStyledButtons(currentCategory); // Atualiza os botões visuais
+    }
+
+    // Configura o clique
+    document.getElementById('resetImg').onclick = resetAlpaca;
 
     document.getElementById('randomImg').onclick = randomizeAlpaca;
     document.getElementById('downloadImg').onclick = downloadAlpaca;
