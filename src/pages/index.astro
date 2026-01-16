@@ -1,5 +1,9 @@
 ---
 import { ALPACA_CATEGORIES } from '../data/options.js';
+import { Icon } from 'astro-icon/components';
+import '@fontsource/outfit';
+import '@fontsource/bungee';
+import '@fontsource/bungee-shade';
 ---
 
 <html lang="en">
@@ -8,11 +12,11 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <title>🦙 Alpaca Generator - Build your own!</title>
   </head>
   <body>
     <main>
-      <h1>Alpaca Generator</h1>
+      <h1>🦙 Alpaca Generator</h1>
       <div class="alpacaImgContainer">
         {
           ALPACA_CATEGORIES.map((category) => {
@@ -52,13 +56,52 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
         </div>
       </div>
     </main>
+    <style is:global>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        font-family: 'Outfit', sans-serif;
+        font-size: 16px;
+        margin: 0;
+        background-color: #f2f2f2;
+        color: #062a62;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        text-transform: uppercase;
+        margin-top: 0;
+        font-family: 'Bungee', sans-serif;
+      }
+      main {
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      main h1 {
+        grid-column: 1 / -1;
+        text-align: center;
+        margin: 0;
+        font-size: 3rem;
+        font-family: 'Bungee Shade', sans-serif;
+      }
 
-    <style>
       .alpacaImgContainer {
         position: relative;
-        width: 500px;
-        height: 500px;
-        background-color: #f4f4f4;
+        width: 100%;
+        max-width: 24rem;
+        aspect-ratio: 1 / 1;
+        border-radius: 1rem;
+        overflow: hidden;
+        margin: 0 auto;
       }
       .alpacaImgContainer img {
         position: absolute;
@@ -66,6 +109,42 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
         left: 0;
         width: 100%;
         height: 100%;
+      }
+
+      .alpacaOptions {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .alpacaOptions button {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.2rem;
+        color: #1056c7;
+        background-color: transparent;
+        border: 2px solid #1056c7;
+        border-radius: 1rem;
+        padding: 0.4rem 1rem;
+        margin: 0.2rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .alpacaOptions button:hover,
+      .alpacaOptions button.active {
+        background-color: #1056c7;
+        color: #fff;
+      }
+
+      /* Desktop Layout */
+      @media (min-width: 1024px) {
+        main {
+          grid-template-columns: auto 1fr;
+          padding: 6rem;
+        }
+
+        .alpacaImgContainer {
+          min-width: 24rem;
+        }
       }
     </style>
   </body>
@@ -127,6 +206,13 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
       // Clearing the container is essential to avoid "stacking" buttons from previous categories.
       container.innerHTML = '';
 
+      const catButtons = document.querySelectorAll(
+        '.alpacaOptions-categories button',
+      );
+      catButtons.forEach((btn) => {
+        btn.classList.toggle('active', btn.id === `cat-${categoryId}`);
+      });
+
       category.options.forEach((option) => {
         const btn = document.createElement('button');
         btn.innerText = option.label;
@@ -137,7 +223,7 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
          * (The user will complete the full CSS styling later).
          */
         if (state[categoryId] === option.id) {
-          btn.style.fontWeight = 'bold';
+          btn.classList.add('active');
         }
 
         btn.onclick = () => {
@@ -158,7 +244,7 @@ import { ALPACA_CATEGORIES } from '../data/options.js';
     );
     categoryButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        // We remove the 'cat-' prefix from the button ID to get the real category ID.
+        // remove the 'cat-' prefix from the button ID to get the real category ID.
         const categoryId = button.id.replace('cat-', '');
         renderStyledButtons(categoryId);
       });
