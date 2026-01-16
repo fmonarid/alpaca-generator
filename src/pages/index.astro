@@ -18,26 +18,38 @@ import '@fontsource/bungee-shade';
     <main>
       <h1>🦙 Alpaca Generator</h1>
       <div class="alpacaImgContainer">
-        {
-          ALPACA_CATEGORIES.map((category) => {
-            const defaultOption = category.options[0];
-            return (
-              <img
-                id={`layer-${category.id}`}
-                src={
-                  defaultOption.filename
-                    ? `/alpaca/${category.id}/${defaultOption.filename}`
-                    : ''
-                }
-                alt={category.label}
-                style={{
-                  zIndex: category.zIndex,
-                  display: defaultOption.filename ? 'block' : 'none',
-                }}
-              />
-            );
-          })
-        }
+        <div class="alpacaImgContainer-layers">
+          {
+            ALPACA_CATEGORIES.map((category) => {
+              const defaultOption = category.options[0];
+              return (
+                <img
+                  id={`layer-${category.id}`}
+                  src={
+                    defaultOption.filename
+                      ? `/alpaca/${category.id}/${defaultOption.filename}`
+                      : ''
+                  }
+                  alt={category.label}
+                  style={{
+                    zIndex: category.zIndex,
+                    display: defaultOption.filename ? 'block' : 'none',
+                  }}
+                />
+              );
+            })
+          }
+        </div>
+        <div class="alpacaImgContainer-actions">
+          <button id="randomImg">
+            <Icon name="lucide:shuffle" />
+            <span>Random</span>
+          </button>
+          <button id="downloadImg">
+            <Icon name="lucide:download" />
+            <span>Download</span>
+          </button>
+        </div>
       </div>
       <div class="alpacaOptions">
         <div class="alpacaOptions-categories">
@@ -78,6 +90,24 @@ import '@fontsource/bungee-shade';
         margin-top: 0;
         font-family: 'Bungee', sans-serif;
       }
+      button {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.2rem;
+        color: #1056c7;
+        background-color: transparent;
+        border: 2px solid #1056c7;
+        border-radius: 1rem;
+        padding: 0.4rem 1rem;
+        margin: 0.2rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      button:hover,
+      button.active {
+        background-color: #1056c7;
+        color: #fff;
+      }
+
       main {
         padding: 1rem;
         display: grid;
@@ -95,6 +125,12 @@ import '@fontsource/bungee-shade';
       }
 
       .alpacaImgContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+      .alpacaImgContainer-layers {
         position: relative;
         width: 100%;
         max-width: 24rem;
@@ -103,36 +139,38 @@ import '@fontsource/bungee-shade';
         overflow: hidden;
         margin: 0 auto;
       }
-      .alpacaImgContainer img {
+      .alpacaImgContainer-layers img {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
       }
+      .alpacaImgContainer-actions {
+        display: flex;
+        gap: 1rem;
+      }
+      .alpacaImgContainer-actions button {
+        background-color: #fff;
+        border: 2px solid #062a62;
+        border-radius: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-weight: bold;
+        box-shadow: -9px 9px 0px #062a62;
+        transition: all 0.1s ease;
+      }
+      .alpacaImgContainer-actions button:hover {
+        transform: translate(-3px, 3px);
+        box-shadow: -3px 3px 0px #1056c7;
+        color: #1056c7;
+      }
 
       .alpacaOptions {
         display: flex;
         flex-direction: column;
         gap: 2rem;
-      }
-
-      .alpacaOptions button {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1.2rem;
-        color: #1056c7;
-        background-color: transparent;
-        border: 2px solid #1056c7;
-        border-radius: 1rem;
-        padding: 0.4rem 1rem;
-        margin: 0.2rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-      .alpacaOptions button:hover,
-      .alpacaOptions button.active {
-        background-color: #1056c7;
-        color: #fff;
       }
 
       /* Desktop Layout */
@@ -151,26 +189,17 @@ import '@fontsource/bungee-shade';
   <script>
     import { ALPACA_CATEGORIES as data } from '../data/options.js';
 
-    /**
-     * GLOBAL STATE (State Management)
-     * Object that stores which option is selected for each category.
-     * Ex: { hair: 'short', eyes: 'panda' }
-     */
+    // State management for selected options
     const state = {};
+    let currentCategory = data[0].id;
     data.forEach((category) => {
-      // We initialize each category with the first option (default) from our data.
       state[category.id] = category.options[0].id;
     });
 
-    /**
-     * FUNCTION: updateAlpaca
-     * Synchronizes the 'state' object with the <img> tags of each layer.
-     * Iterates through all images and updates their 'src' according to the user's choice.
-     */
+    // Update image layers based on current state
     function updateAlpaca() {
       for (const categoryId in state) {
         const optionId = state[categoryId];
-        // 'layer-' avoids ID conflict between the image and the category button.
         const imgElement = document.getElementById(`layer-${categoryId}`);
 
         if (imgElement) {
@@ -180,30 +209,24 @@ import '@fontsource/bungee-shade';
           );
 
           if (optionData.filename) {
-            // If we have a valid image (e.g., backgrounds, hair, etc)
             imgElement.setAttribute(
               'src',
               `/alpaca/${categoryId}/${optionData.filename}`,
             );
             imgElement.style.display = 'block';
           } else {
-            // If 'None' (e.g., accessories): we hide the <img> layer.
             imgElement.style.display = 'none';
           }
         }
       }
     }
 
-    /**
-     * FUNCTION: renderStyledButtons
-     * Dynamically draws the style buttons (sub-options) within the "Style" section.
-     * @param {string} categoryId - The ID of the selected category (e.g., 'hair').
-     */
+    // Render style/attribute buttons for the selected category
     function renderStyledButtons(categoryId) {
+      currentCategory = categoryId;
       const container = document.getElementById('styles-container');
       const category = data.find((cat) => cat.id === categoryId);
 
-      // Clearing the container is essential to avoid "stacking" buttons from previous categories.
       container.innerHTML = '';
 
       const catButtons = document.querySelectorAll(
@@ -217,17 +240,11 @@ import '@fontsource/bungee-shade';
         const btn = document.createElement('button');
         btn.innerText = option.label;
 
-        /**
-         * VISUAL STATE LOGIC:
-         * Indicates which option is currently selected.
-         * (The user will complete the full CSS styling later).
-         */
         if (state[categoryId] === option.id) {
           btn.classList.add('active');
         }
 
         btn.onclick = () => {
-          // Updates the data -> Changes the image on screen -> Redraws the buttons.
           state[categoryId] = option.id;
           updateAlpaca();
           renderStyledButtons(categoryId);
@@ -236,23 +253,33 @@ import '@fontsource/bungee-shade';
       });
     }
 
-    /**
-     * CLICK CONFIGURATION: Main Categories
-     */
+    // Category selection event listeners
     const categoryButtons = document.querySelectorAll(
       '.alpacaOptions-categories button',
     );
     categoryButtons.forEach((button) => {
       button.addEventListener('click', () => {
-        // remove the 'cat-' prefix from the button ID to get the real category ID.
         const categoryId = button.id.replace('cat-', '');
         renderStyledButtons(categoryId);
       });
     });
 
-    // --- INITIALIZATION ---
-    // We do the first drawing of the images and open the first "drawer" (Background).
+    // Initial render
     updateAlpaca();
     renderStyledButtons(data[0].id);
+
+    // randomize img
+    function randomizeAlpaca() {
+      data.forEach((category) => {
+        const randomIndex = Math.floor(Math.random() * category.options.length);
+        state[category.id] = category.options[randomIndex].id;
+      });
+
+      updateAlpaca();
+      renderStyledButtons(currentCategory);
+    }
+
+    // Configura o clique no botão do HTML
+    document.getElementById('randomImg').onclick = randomizeAlpaca;
   </script>
 </html>
