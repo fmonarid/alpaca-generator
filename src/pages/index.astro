@@ -279,7 +279,38 @@ import '@fontsource/bungee-shade';
       renderStyledButtons(currentCategory);
     }
 
-    // Configura o clique no botão do HTML
+    // download image
+    async function downloadAlpaca() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1000;
+      canvas.height = 1000;
+      const ctx = canvas.getContext('2d');
+
+      const sortedCategories = [...data].sort((a, b) => a.zIndex - b.zIndex);
+
+      for (const category of sortedCategories) {
+        const optionId = state[category.id];
+        const optionData = category.options.find((o) => o.id === optionId);
+
+        if (optionData.filename) {
+          await new Promise<void>((resolve) => {
+            const img = new Image();
+            img.src = `/alpaca/${category.id}/${optionData.filename}`;
+            img.onload = () => {
+              ctx.drawImage(img, 0, 0, 1000, 1000);
+              resolve();
+            };
+          });
+        }
+      }
+
+      const link = document.createElement('a');
+      link.download = 'my-alpaca.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
     document.getElementById('randomImg').onclick = randomizeAlpaca;
+    document.getElementById('downloadImg').onclick = downloadAlpaca;
   </script>
 </html>
