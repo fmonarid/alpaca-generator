@@ -66,15 +66,32 @@ export const ALPACA_CATEGORIES = [
     ],
   },
   {
+    id: 'nose',
+    label: 'Nose',
+    zIndex: 4,
+    options: [{ id: 'default', label: 'Default', filename: 'default.png' }],
+  },
+  {
+    id: 'mouth',
+    label: 'Mouth',
+    zIndex: 5,
+    options: [
+      { id: 'default', label: 'Default', filename: 'default.png' },
+      { id: 'astonished', label: 'Astonished', filename: 'astonished.png' },
+      { id: 'eating', label: 'Eating', filename: 'eating.png' },
+      { id: 'laugh', label: 'Laugh', filename: 'laugh.png' },
+      { id: 'tongue', label: 'Tongue', filename: 'tongue.png' },
+    ],
+  },
+  {
     id: 'hair',
     label: 'Hair',
-    zIndex: 4,
+    zIndex: 6,
     options: [
       { id: 'default', label: 'Default', filename: 'default.png' },
       { id: 'bang', label: 'Bang', filename: 'bang.png' },
       { id: 'curls', label: 'Curls', filename: 'curls.png' },
       { id: 'elegant', label: 'Elegant', filename: 'elegant.png' },
-      { id: 'fancy', label: 'Fancy', filename: 'fancy.png' },
       { id: 'quiff', label: 'Quiff', filename: 'quiff.png' },
       { id: 'short', label: 'Short', filename: 'short.png' },
     ],
@@ -82,7 +99,7 @@ export const ALPACA_CATEGORIES = [
   {
     id: 'eyes',
     label: 'Eyes',
-    zIndex: 5,
+    zIndex: 7,
     options: [
       { id: 'default', label: 'Default', filename: 'default.png' },
       { id: 'angry', label: 'Angry', filename: 'angry.png' },
@@ -90,24 +107,6 @@ export const ALPACA_CATEGORIES = [
       { id: 'panda', label: 'Panda', filename: 'panda.png' },
       { id: 'smart', label: 'Smart', filename: 'smart.png' },
       { id: 'star', label: 'Star', filename: 'star.png' },
-    ],
-  },
-  {
-    id: 'nose',
-    label: 'Nose',
-    zIndex: 6,
-    options: [{ id: 'default', label: 'Default', filename: 'default.png' }],
-  },
-  {
-    id: 'mouth',
-    label: 'Mouth',
-    zIndex: 7,
-    options: [
-      { id: 'default', label: 'Default', filename: 'default.png' },
-      { id: 'astonished', label: 'Astonished', filename: 'astonished.png' },
-      { id: 'eating', label: 'Eating', filename: 'eating.png' },
-      { id: 'laugh', label: 'Laugh', filename: 'laugh.png' },
-      { id: 'tongue', label: 'Tongue', filename: 'tongue.png' },
     ],
   },
   {
