@@ -1,43 +1,80 @@
-# Astro Starter Kit: Minimal
+# 🦙 Alpaca Image Generator
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A professional, interactive, and fun layered image generator built with **Astro** and **Vanilla JavaScript**. This project was inspired by the [CodeMentor](https://www.codementor.io/projects/web/alpaca-image-generator-website-ce2oc0eus8) challenge.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+🚀 [Live Demo](https://alpaca-generator-alpha.vercel.app/)
 
-## 🚀 Project Structure
+![Project Preview - Main Screen](docs/screenshots/img-main-preview.png)
 
-Inside of your Astro project, you'll see the following folders and files:
+## ✨ Features
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- **50+ Customization Options**: Mix and match hair, ears, eyes, accessories, and more.
+- **🎲 Smart Randomize**: Generate a unique alpaca design with a single click.
+- **💾 Design Persistence**: Your latest creation is automatically saved in your browser (LocalStorage).
+- **📥 High-Resolution Export**: Download your alpaca as a 1000px PNG file.
+- **🎨 Nice UI/UX**: Responsive and tactile interface with smooth animations and custom modern illustratations.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 📸 Demo & Screenshots
 
-Any static assets, like images, can be placed in the `public/` directory.
+### 🧩 Layered Customization
 
-## 🧞 Commands
+_Select categories and change styles in real-time._
+![Customizing Alpaca](docs/screenshots/img-custom-options.png)
 
-All commands are run from the root of the project, from a terminal:
+### 🎲 Random & Reset
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+_Explore thousands of combinations or return to defaults instantly._
+![Randomize and Reset](docs/screenshots/img-random.png)
+![Randomize and Reset](docs/screenshots/img-reset.png)
 
-## 👀 Want to learn more?
+### 💾 Download your Alpaca
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+_Get a high-quality PNG of your final design._
+![Download Feature](docs/screenshots/img-download.png)
+
+---
+
+## 🛠️ Built With
+
+- [Astro](https://astro.build/) - The web framework for content-driven websites.
+- [Vanilla JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - For core application logic and performance.
+- [Lucide Icons](https://lucide.dev/) - For clean, consistent iconography.
+- [Google Fonts](https://fonts.google.com/) - Outfit & Bungee for a modern, playful look.
+- [CSS Grid & Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS) - For a robust responsive layout.
+
+---
+
+## 🚀 Getting Started
+
+To run this project locally:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/alpaca-img-generator.git
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📝 Author
+
+_Created with 🦙 by [fmonarid](https://github.com/fmonarid/alpaca-generator) | A [Codementor Challenge](https://www.codementor.io/projects/web/alpaca-image-generator-website-ce2oc0eus8)._
