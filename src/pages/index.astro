@@ -201,8 +201,8 @@ import '@fontsource/bungee-shade';
 
         .alpacaImgContainer-layers {
           min-width: 32rem;
-          min-width: none;
         }
+
         .alpacaImgContainer-actions {
           flex-direction: row;
         }
@@ -216,12 +216,20 @@ import '@fontsource/bungee-shade';
   <script>
     import { ALPACA_CATEGORIES as data } from '../data/options.js';
 
-    // State management for selected options
-    const state = {};
+    // State management and persistence
+    const savedState = localStorage.getItem('alpaca-state');
+    const state = savedState ? JSON.parse(savedState) : {};
     let currentCategory = data[0].id;
-    data.forEach((category) => {
-      state[category.id] = category.options[0].id;
-    });
+
+    if (!savedState) {
+      data.forEach((category) => {
+        state[category.id] = category.options[0].id;
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem('alpaca-state', JSON.stringify(state));
+    }
 
     // Update image layers based on current state
     function updateAlpaca() {
@@ -273,6 +281,7 @@ import '@fontsource/bungee-shade';
 
         btn.onclick = () => {
           state[categoryId] = option.id;
+          saveState();
           updateAlpaca();
           renderStyledButtons(categoryId);
         };
@@ -295,13 +304,14 @@ import '@fontsource/bungee-shade';
     updateAlpaca();
     renderStyledButtons(data[0].id);
 
-    // randomize img
+    // Randomize all attributes
     function randomizeAlpaca() {
       data.forEach((category) => {
         const randomIndex = Math.floor(Math.random() * category.options.length);
         state[category.id] = category.options[randomIndex].id;
       });
 
+      saveState();
       updateAlpaca();
       renderStyledButtons(currentCategory);
     }
@@ -337,14 +347,15 @@ import '@fontsource/bungee-shade';
       link.click();
     }
 
+    // Reset to default settings
     function resetAlpaca() {
       data.forEach((category) => {
-        // always reset to first option (0 index)
         state[category.id] = category.options[0].id;
       });
 
-      updateAlpaca(); // Desenha a Alpaca original
-      renderStyledButtons(currentCategory); // Atualiza os botões visuais
+      saveState();
+      updateAlpaca();
+      renderStyledButtons(currentCategory);
     }
 
     // Configura o clique
